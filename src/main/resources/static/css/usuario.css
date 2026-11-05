@@ -1,0 +1,159 @@
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Transições suaves */
+.nav-item {
+    transition: all 0.2s ease-in-out;
+}
+
+.tab-content {
+    animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================== FOOTER / RODAPÉ ===================== */
+.footer-container {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 30px;
+    position: relative;
+    z-index: 10;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Listas globais do rodapé */
+footer ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Redes Sociais e Ícones */
+.socials {
+    gap: 35px;
+}
+
+.socials li {
+    display: flex;
+    justify-content: center;
+    width: 70px;
+}
+
+.socials a {
+    position: relative;
+    font-size: 20px;
+    background: rgba(11, 89, 255, 0.85);
+    color: #ffffff !important;
+    backdrop-filter: blur(10px);
+    display: grid;
+    place-items: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.25s, background 0.25s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+}
+
+.socials a:hover {
+    transform: scale(1.15);
+    background: rgba(11, 89, 255, 1);
+}
+
+/* Tooltip das Redes Sociais via ::after */
+.socials a::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    translate: -50% 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: rgb(8 11 18 / 94%);
+    color: #eceefc;
+    font-family: "Euclid Circular A", "Poppins", sans-serif;
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s, translate 0.25s;
+}
+
+.socials a:hover::after {
+    opacity: 1;
+    translate: -50% 0;
+}
+
+/* Links do Rodapé */
+.links {
+    gap: 35px;
+}
+
+.links li {
+    display: flex;
+    justify-content: center;
+    width: 70px;
+}
+
+.links a {
+    padding: 0;
+    cursor: pointer;
+    color: #d6dfed;
+    text-decoration: none;
+    transition: opacity 0.3s;
+    text-align: center;
+    font-size: 14px;
+}
+
+.links:has(a:hover) a:not(:hover) {
+    opacity: 0.3;
+}
+
+/* Texto Legal / Copyright */
+.legal {
+    font-size: 12px;
+    margin-top: 10px;
+    color: #88abeb;
+    text-align: center;
+}

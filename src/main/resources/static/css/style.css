@@ -1,0 +1,339 @@
+/* ===================== VARIÁVEIS ===================== */
+.card {
+  --color-primary: #6d5cff;
+  --color-primary-hover: #5b4ae8;
+  --color-muted: #6b6b76;
+  --color-border: #e0e0e8;
+  --color-field: #f7f7fa;
+  --color-card: #ffffff;
+  --color-text: #1a1a1f;
+  --card-w: 660px;
+  --card-h: 520px;
+  --wedge: 71deg;
+  --wedge-inset: 182px;
+  --bg-reach: calc(var(--card-w) + var(--card-h));
+  --wedge-drop: 150px;
+  --pivot-shift: calc(var(--wedge-drop) / tan(var(--wedge)));
+  position: relative;
+  overflow: hidden;
+  width: var(--card-w);
+  height: var(--card-h);
+  border-radius: 28px;
+  background: var(--color-card);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* ===================== FUNDO DIAGONAL ===================== */
+.card-bg {
+  position: absolute;
+  z-index: 2;
+  top: auto;
+  bottom: calc(var(--wedge-drop) * -1);
+  left: calc(var(--wedge-inset) - var(--pivot-shift) - var(--bg-reach));
+  width: calc(var(--bg-reach) * 2);
+  height: var(--bg-reach);
+  rotate: calc(var(--wedge) * -1);
+  transform-origin: var(--bg-reach) 100%;
+  background: linear-gradient(135deg, #6d5cff 0%, #8b7cff 100%);
+}
+
+.card-bg-2 {
+  rotate: 0deg;
+  opacity: 0;
+  right: auto;
+  left: calc(var(--card-w) - var(--wedge-inset) + var(--pivot-shift) - var(--bg-reach));
+  transform-origin: var(--bg-reach) 100%;
+}
+
+/* Animações */
+.card.has-toggled:not(.register) .card-bg-1 { animation: card-bg-register 1.2s both; }
+.card.has-toggled.register .card-bg-1 { animation: card-bg-login 1.2s both; }
+.card.has-toggled:not(.register) .card-bg-2 { animation: card-bg-2-register 1.2s both; }
+.card.has-toggled.register .card-bg-2 { animation: card-bg-2-login 1.2s both; }
+.card:not(.has-toggled) .card-bg-1 { opacity: 0; }
+.card:not(.has-toggled) .card-bg-2 {
+  opacity: 1;
+  rotate: var(--wedge);
+}
+
+/* ===================== SWITCH ===================== */
+.card:not(.register) .switch.login :is(.switch-btn, .switch-brand),
+.card.register .switch.register :is(.switch-btn, .switch-brand) {
+  opacity: 1;
+  translate: 0;
+  transition: opacity 0.3s 0.85s, translate 0.3s 0.85s;
+}
+
+.switch {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 50%;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  padding-top: 52px;
+  pointer-events: none;
+}
+
+.switch.login {
+  translate: 100% 0;
+}
+
+.switch .switch-btn {
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.switch :is(.switch-btn, .switch-brand) {
+  opacity: 0;
+  transition: opacity 0.3s, translate 0.3s;
+}
+
+.switch.register :is(.switch-btn, .switch-brand) {
+  translate: calc(var(--card-w) / -2) 0;
+}
+
+.switch.login :is(.switch-btn, .switch-brand) {
+  translate: calc(var(--card-w) / 2) 0;
+}
+
+.card:not(.register) .switch.login .switch-btn,
+.card.register .switch.register .switch-btn {
+  pointer-events: auto;
+}
+
+.switch .switch-btn:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ===================== FORMULÁRIOS ===================== */
+.form {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.form form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 290px;
+  padding-inline: 16px;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.form.register {
+  translate: 100% 0;
+}
+
+.form.register form {
+  translate: 320px 0;
+}
+
+.form.login form {
+  translate: -320px 0;
+}
+
+.card:not(.register) .form.login form,
+.card.register .form.register form {
+  opacity: 1;
+  translate: 0;
+  transition: 0.4s 0.8s;
+}
+
+/* ===================== TIPOGRAFIA E INPUTS ===================== */
+.form form h2 {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 28px 0;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.input-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4a4a55;
+  letter-spacing: 0.01em;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  background-color: var(--color-field);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.input-group input::placeholder {
+  color: #a0a0ab;
+  font-weight: 400;
+}
+
+.input-group input:focus {
+  border-color: var(--color-primary);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(109, 92, 255, 0.15);
+}
+
+/* ===================== BOTÃO ===================== */
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6d5cff 0%, #7b6bff 100%);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 8px 24px rgba(109, 92, 255, 0.35);
+  transition: all 0.25s ease;
+  letter-spacing: 0.01em;
+}
+
+.btn-submit:hover {
+  background: linear-gradient(135deg, #5b4ae8 0%, #6d5cff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(109, 92, 255, 0.45);
+}
+
+.btn-submit:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 4px 14px rgba(109, 92, 255, 0.25);
+}
+.btn-google {
+  width: 100%;
+  padding:  14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+}
+
+.btn-google:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.btn-google:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+
+
+
+/* ===================== ANIMAÇÕES ===================== */
+@keyframes card-bg-register {
+  0% { rotate: calc(var(--wedge) * -1); }
+  50% { opacity: 1; }
+  50%, 100% { rotate: 0deg; }
+  50.01%, 100% { opacity: 0; }
+}
+
+@keyframes card-bg-login {
+  0% { opacity: 0; rotate: 0deg; }
+  49% { opacity: 0; rotate: 0deg; }
+  49.01% { opacity: 1; rotate: 0deg; }
+  50% { rotate: 0deg; }
+  100% { opacity: 1; rotate: calc(var(--wedge) * -1); }
+}
+
+@keyframes card-bg-2-register {
+  0% { opacity: 0; rotate: 0deg; }
+  49% { opacity: 0; rotate: 0deg; }
+  49.01% { opacity: 1; rotate: 0deg; }
+  50% { rotate: 0deg; }
+  100% { opacity: 1; rotate: var(--wedge); }
+}
+
+@keyframes card-bg-2-login {
+  0% { rotate: var(--wedge); opacity: 1; }
+  50%, 100% { rotate: 0deg; opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #d6dfed;
+  overflow-x: hidden;
+}
+
+.texto-maiusculo {
+ font-family: 'Inter', sans-serif; /* Mantém a mesma fonte padrão do projeto */
+     font-size: 0.875rem; /* Tamanho equivalente a text-sm */
+     font-weight: 500;
+     color: #64748b;
+     text-align: center;
+     margin: 1rem 0;   /* Espaçamento superior e inferior */
+     text-transform: uppercase;
+
+}
