@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 } else {
                     const erroMensagem = await resposta.text();
-                    alert("Aviso: " + (erroMensagem || "Este e-mail já está cadastrado."));
+                    alert("Aviso: " + (erroMensagem || "Este usuário/e-mail já está cadastrado."));
                 }
             } catch (erro) {
                 console.error("Erro na comunicação com o servidor:", erro);
@@ -96,41 +96,42 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-// 2. FORMULÁRIO DE LOGIN TRADICIONAL (Entrar por Usuário)
-const formLogin = document.querySelector(".form.login form");
+    // 2. FORMULÁRIO DE LOGIN TRADICIONAL (Entrar por Usuário)
+    const formLogin = document.querySelector(".form.login form");
 
-if (formLogin) {
-    formLogin.addEventListener("submit", async (event) => {
-        event.preventDefault();
+    if (formLogin) {
+        formLogin.addEventListener("submit", async (event) => {
+            event.preventDefault();
 
-        const credenciais = {
-            nome: document.querySelector("#username").value, // <--- Agora busca pelo nome/usuário digitado no input
-            senha: document.querySelector("#password").value
-        };
+            const credenciais = {
+                nome: document.querySelector("#username").value, // Busca pelo nome/username digitado no input
+                senha: document.querySelector("#password").value
+            };
 
-        try {
-            const resposta = await fetch("/usuarios/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(credenciais)
-            });
+            try {
+                const resposta = await fetch("/usuarios/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(credenciais)
+                });
 
-            if (resposta.ok) {
-                const usuario = await resposta.json();
-                alert("Usuário logado com sucesso! Bem-vindo de volta, " + usuario.nome);
+                if (resposta.ok) {
+                    const usuario = await resposta.json();
+                    alert("Usuário logado com sucesso! Bem-vindo de volta, " + usuario.nome);
 
-                localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
-                window.location.href = "Main.html";
-                formLogin.reset();
-            } else {
-                const erroMensagem = await resposta.text();
-                alert("Erro ao entrar: " + (erroMensagem || "Usuário ou senha incorretos."));
+                    localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+                    window.location.href = "Main.html";
+                    formLogin.reset();
+                } else {
+                    const erroMensagem = await resposta.text();
+                    alert("Erro ao entrar: " + (erroMensagem || "Usuário ou senha incorretos."));
+                }
+            } catch (erro) {
+                console.error("Erro na comunicação com o servidor:", erro);
+                alert("Não foi possível conectar ao servidor.");
             }
-        } catch (erro) {
-            console.error("Erro na comunicação com o servidor:", erro);
-            alert("Não foi possível conectar ao servidor.");
-        }
-    });
-}
+        });
+    }
+});
