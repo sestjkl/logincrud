@@ -47,18 +47,18 @@ public class UsuarioController {
     }
 
     // ==========================================
-    // LOGIN TRADICIONAL (E-MAIL E SENHA)
+    // LOGIN TRADICIONAL (POR NOME DE USUÁRIO E SENHA)
     // ==========================================
     @PostMapping("/login")
     public ResponseEntity<?> loginTradicional(@RequestBody Usuario dadosLogin) {
         try {
-            // Busca o usuário pelo e-mail utilizando o service/repository
+            // Busca o usuário pelo NOME (ou username)
             Usuario usuario = service.listarTodos().stream()
-                    .filter(u -> u.getEmail() != null && u.getEmail().equalsIgnoreCase(dadosLogin.getEmail()))
+                    .filter(u -> u.getNome() != null && u.getNome().equalsIgnoreCase(dadosLogin.getNome()))
                     .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("E-mail não encontrado."));
+                    .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
 
-            // Valida a senha usando o PasswordEncoder injetado no Spring
+            // Valida a senha usando o PasswordEncoder injetado
             if (usuario.getSenha() == null || !passwordEncoder.matches(dadosLogin.getSenha(), usuario.getSenha())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta.");
             }

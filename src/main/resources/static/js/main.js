@@ -96,46 +96,41 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 2. FORMULÁRIO DE LOGIN TRADICIONAL (Entrar)
-    const formLogin = document.querySelector(".form.login form");
+// 2. FORMULÁRIO DE LOGIN TRADICIONAL (Entrar por Usuário)
+const formLogin = document.querySelector(".form.login form");
 
-    if (formLogin) {
-        formLogin.addEventListener("submit", async (event) => {
-            event.preventDefault(); // Impede o envio padrão
+if (formLogin) {
+    formLogin.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-            const credenciais = {
-                email: document.querySelector("#username").value,
-                senha: document.querySelector("#password").value
-            };
+        const credenciais = {
+            nome: document.querySelector("#username").value, // <--- Agora busca pelo nome/usuário digitado no input
+            senha: document.querySelector("#password").value
+        };
 
-            try {
-                const resposta = await fetch("/usuarios/login", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(credenciais)
-                });
+        try {
+            const resposta = await fetch("/usuarios/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(credenciais)
+            });
 
-                if (resposta.ok) {
-                    const usuario = await resposta.json();
+            if (resposta.ok) {
+                const usuario = await resposta.json();
+                alert("Usuário logado com sucesso! Bem-vindo de volta, " + usuario.nome);
 
-                    // POP-UP DE SUCESSO AO LOGAR
-                    alert("Usuário logado com sucesso! Bem-vindo de volta, " + usuario.nome);
-
-                    // Salva os dados e redireciona para o painel principal
-                    localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
-                    window.location.href = "Main.html";
-
-                    formLogin.reset();
-                } else {
-                    const erroMensagem = await resposta.text();
-                    alert("Erro ao entrar: " + (erroMensagem || "E-mail ou senha incorretos."));
-                }
-            } catch (erro) {
-                console.error("Erro na comunicação com o servidor:", erro);
-                alert("Não foi possível conectar ao servidor.");
+                localStorage.setItem("usuarioLogado", JSON.stringify(usuario));
+                window.location.href = "Main.html";
+                formLogin.reset();
+            } else {
+                const erroMensagem = await resposta.text();
+                alert("Erro ao entrar: " + (erroMensagem || "Usuário ou senha incorretos."));
             }
-        });
-    }
-});
+        } catch (erro) {
+            console.error("Erro na comunicação com o servidor:", erro);
+            alert("Não foi possível conectar ao servidor.");
+        }
+    });
+}
