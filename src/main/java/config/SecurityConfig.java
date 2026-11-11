@@ -39,6 +39,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/usuarios/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                // Ativa o suporte ao OAuth2 Client (Login com o Google)
+                .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessURL("/Main.html", true)
+                )
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
 
