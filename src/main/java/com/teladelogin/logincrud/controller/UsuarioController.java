@@ -9,7 +9,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +20,11 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class UsuarioController {
     private final UsuarioService service;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioController(UsuarioService service) {
+    public UsuarioController(UsuarioService service, PasswordEncoder passwordEncoder) {
         this.service = service;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping
@@ -50,15 +52,14 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<?> loginTradicional(@RequestBody Usuario dadosLogin) {
         try {
-            // Busca o usuário pelo e-mail
+            // Busca o usuário pelo e-mail utilizando o service/repository
             Usuario usuario = service.listarTodos().stream()
-                    .filter(u -> u.getEmail().equals(dadosLogin.getEmail()))
+                    .filter(u -> u.getEmail() != null && u.getEmail().equalsIgnoreCase(dadosLogin.getEmail()))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("E-mail não encontrado."));
 
-            // Valida a senha usando o PasswordEncoder
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            if (!encoder.matches(dadosLogin.getSenha(), usuario.getSenha())) {
+            // Valida a senha usando o PasswordEncoder injetado no Spring
+            if (usuario.getSenha() == null || !passwordEncoder.matches(dadosLogin.getSenha(), usuario.getSenha())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta.");
             }
 
