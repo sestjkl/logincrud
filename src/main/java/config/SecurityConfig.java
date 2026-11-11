@@ -41,7 +41,7 @@ public class SecurityConfig {
                 )
                 // Ativa o suporte ao OAuth2 Client (Login com o Google)
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessURL("/Main.html", true)
+                        .defaultSuccessUrl("/Main.html", true)
                 )
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
