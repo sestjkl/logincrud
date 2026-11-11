@@ -52,7 +52,7 @@ async function enviarTokenParaBackend(idToken) {
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
 
-    // 1. FORMULÁRIO DE CADASTRO (Criar Conta)
+    // 1. FORMULÁRIO DE CADASTRO (Com validação de duplicidade)
     const formRegister = document.querySelector(".form.register form");
 
     if (formRegister) {
@@ -78,12 +78,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     const resultado = await resposta.json();
 
                     // POP-UP DE SUCESSO AO CRIAR CONTA
-                    alert("Usuário criado com sucesso! ID: " + resultado.id);
-
+                    alert("Usuário criado com sucesso!");
                     formRegister.reset();
+
+                    // Opcional: Remove a classe register para voltar à tela de login automaticamente
+                    if (card) {
+                        card.classList.remove("register");
+                    }
                 } else {
                     const erroMensagem = await resposta.text();
-                    alert("Erro ao cadastrar: " + (erroMensagem || "E-mail já cadastrado."));
+                    alert("Aviso: " + (erroMensagem || "Este e-mail já está cadastrado."));
                 }
             } catch (erro) {
                 console.error("Erro na comunicação com o servidor:", erro);
@@ -126,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     formLogin.reset();
                 } else {
                     const erroMensagem = await resposta.text();
-                    alert("Erro ao entrar: " + (erroMensagem || "Credenciais inválidas."));
+                    alert("Erro ao entrar: " + (erroMensagem || "E-mail ou senha incorretos."));
                 }
             } catch (erro) {
                 console.error("Erro na comunicação com o servidor:", erro);
