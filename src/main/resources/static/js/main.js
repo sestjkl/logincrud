@@ -22,7 +22,7 @@ function handleCredentialResponse(response) {
 
 async function enviarTokenParaBackend(idToken) {
     try {
-        const resposta = await fetch("http://localhost:8080/usuarios/google", {
+        const resposta = await fetch("/usuarios/google", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (formRegister) {
         formRegister.addEventListener("submit", async (event) => {
-            event.preventDefault(); // Impede a página de mudar de rota ou recarregar (Evita o 404)
+            event.preventDefault(); // Impede a página de mudar de rota ou recarregar
 
             const dadosUsuario = {
                 nome: document.querySelector("#reg-username").value,
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             try {
-                const resposta = await fetch("http://localhost:8080/usuarios", {
+                const resposta = await fetch("/usuarios", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             try {
-                const resposta = await fetch("http://localhost:8080/usuarios/login", {
+                const resposta = await fetch("/usuarios/login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

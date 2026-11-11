@@ -187,7 +187,7 @@ function closeModal() {
 // 1. Carregar lista de utilizadores na tabela do painel
 async function carregarUsuariosTabela() {
     try {
-        const resposta = await fetch("http://localhost:8080/usuarios");
+        const resposta = await fetch("/usuarios");
         if (resposta.ok) {
             const usuarios = await resposta.json();
             const tbody = document.getElementById("userTableBody");
@@ -306,7 +306,7 @@ function renderizarGraficoUltimosMeses(usuarios) {
 // 3. Carregar métricas reais, gráficos e integridade de perfis dinamicamente
 async function carregarMetricasDashboard() {
     try {
-        const resposta = await fetch("http://localhost:8080/usuarios");
+        const resposta = await fetch("/usuarios");
         if (resposta.ok) {
             const usuarios = await resposta.json();
             const total = usuarios.length;
@@ -384,7 +384,7 @@ async function addUser() {
     };
 
     try {
-        const resposta = await fetch("http://localhost:8080/usuarios", {
+        const resposta = await fetch("/usuarios", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(novoUsuario)
@@ -410,7 +410,7 @@ async function deletarUsuario(id) {
     if (!confirm("Tem certeza que deseja excluir este usuário?")) return;
 
     try {
-        const resposta = await fetch(`http://localhost:8080/usuarios/${id}`, {
+        const resposta = await fetch(`/usuarios/${id}`, {
             method: "DELETE"
         });
 
@@ -445,7 +445,7 @@ async function saveProfile() {
     };
 
     try {
-        const resposta = await fetch(`http://localhost:8080/usuarios/${usuarioAtual.id}`, {
+        const resposta = await fetch(`/usuarios/${usuarioAtual.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(novosDados)
