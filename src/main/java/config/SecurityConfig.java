@@ -18,13 +18,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Desativa o CSRF para permitir requisições AJAX/Fetch (POST, PUT, DELETE)
                 .authorizeHttpRequests(auth -> auth
-                        // Libera arquivos estáticos e páginas principais
+                        // Libera arquivos estáticos, scripts e páginas principais
                         .requestMatchers(
                                 "/",
                                 "/index.html",
                                 "/Main.html",
                                 "/main.html",
                                 "/script.js",
+                                "/user.js",
                                 "/style.css",
                                 "/js/**",
                                 "/css/**",

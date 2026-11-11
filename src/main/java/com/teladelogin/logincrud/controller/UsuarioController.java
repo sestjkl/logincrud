@@ -52,6 +52,13 @@ public class UsuarioController {
     @PostMapping("/login")
     public ResponseEntity<?> loginTradicional(@RequestBody Usuario dadosLogin) {
         try {
+            // Bloqueia tentativas de login manual com o nome "admin" ou "administrador"
+            if (dadosLogin.getNome() != null &&
+                    (dadosLogin.getNome().equalsIgnoreCase("admin") || dadosLogin.getNome().equalsIgnoreCase("administrador"))) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("Acesso negado: o usuário administrador não pode logar por este formulário.");
+            }
+
             // Busca o usuário pelo NOME (ou username)
             Usuario usuario = service.listarTodos().stream()
                     .filter(u -> u.getNome() != null && u.getNome().equalsIgnoreCase(dadosLogin.getNome()))
